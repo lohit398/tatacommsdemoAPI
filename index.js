@@ -13,6 +13,8 @@ const pool = new Pool({
   },
 });
 
+app.use(express.static(__dirname + '/')); 
+
 pool.connect();
 
 const query = `SELECT * from insights;`;
@@ -34,14 +36,15 @@ app.use(function (req, res, next) {
   next();
 });
 
+
 app.get("/getrows", function (req, res) {
-  pool.query(query).then((res) => {
-    console.log(res.rows);
+  pool.query(query).then((result) => {
+    res.send(result.rows);
   });
 });
 
 app.get("/", function (req, res) {
-  console.log("In main");
+
 });
 
 app.listen(PORT, function () {
